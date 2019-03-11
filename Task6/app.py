@@ -74,7 +74,7 @@ class BraunRobinsGame(AnalyticalGame):
 			self.winnings_a = np.vstack([self.winnings_a, self.np_matrix[:, x1]])
 			self.winnings_b = np.vstack([self.winnings_b, self.np_matrix[y1, :]])
 			if not i:
-				self.winnings_a = np.delete(self.winnings_a, (0), axis=0) # remove first line
+				self.winnings_a = np.delete(self.winnings_a, (0), axis=0)  # remove first line
 				self.winnings_b = np.delete(self.winnings_b, (0), axis=0)  # remove first line
 			
 		self.pprint_payment_matrix()
@@ -85,16 +85,35 @@ class BraunRobinsGame(AnalyticalGame):
 		self.winnings_ab = np.column_stack((self.winnings_a, self.winnings_b))
 		self.result_matrix = np.column_stack((self.winnings_ab, self.static_matrix))
 		
-		pre_line = 'Ax1\tAx2\tAx3\tBy1\tBy2\tBy3'
+		pre_line = 'K\tAx1\tAx2\tAx3\tBy1\tBy2\tBy3\tI   \tJ   \t'
 		print(pre_line)
 		for i, row in enumerate(self.result_matrix):
-			line = '\t'.join(['{}'.format(i) for i in row])
+			line ='{}\t{}'.format(i, '\t'.join(['{}'.format(elem) for elem in row]))
 			print(line)
 
 	
 	def get_price_game(self):
-		self.top_game_price = self.np_matrix.max(axis=0).min()
-		self.lower_game_price = self.np_matrix.min(axis=1).max()
+		def check_point(a, b):  # проверка наличия седловой точки
+			if a == b:
+				return True
+			else:
+				return False
+			
+		self.top_game_price = self.np_matrix.max(axis=0).min()  # нахождение верхней цены игры
+		self.lower_game_price = self.np_matrix.min(axis=1).max()  # -//- нижней
+		
+		if check_point(self.top_game_price, self.lower_game_price):
+			print('Есть седловая точка, {} == {}'.format(self.top_game_price, self.lower_game_price))
+		else:
+			print('Нет седловой точки, {} <> {}'.format(self.top_game_price, self.lower_game_price))
+		
+		print('Игроки\tB1\tB2\tB3    min(Ai)')
+		for i, row in enumerate(self.np_matrix):
+			line ='A{}\t{}\t{}'.format(i+1, '\t'.join(['{}'.format(elem) for elem in row]), self.np_matrix.min(axis=1)[i])
+			print(line)
+		print('max(Bi)\t{}   {}\{}'.format('\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]), self.np_matrix.max(axis=0).min(), self.np_matrix.min(axis=1).max()))
+		print('=============================')
+		
 		return self.top_game_price, self.lower_game_price
 		#print(price_game_b, price_game_a, self.top_game_price, self.lower_game_price)
 
