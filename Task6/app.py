@@ -67,6 +67,7 @@ class BraunRobinsGame(AnalyticalGame):
 	
 	def building_payment_matrix(self):
 		for i, row in enumerate(self.static_matrix):
+			
 			#print(i, row)
 			x1, y1 = row[0]-1, row[1]-1
 			#print(self.np_matrix[:, x1])
@@ -82,10 +83,10 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(self.winnings_a, self.winnings_b)
 		
 	def pprint_payment_matrix(self):
-		self.winnings_ab = np.column_stack((self.winnings_a, self.winnings_b))
+		self.winnings_ab = np.column_stack((self.winnings_b, self.winnings_a))
 		self.result_matrix = np.column_stack((self.winnings_ab, self.static_matrix))
 		
-		pre_line = 'K\tAx1\tAx2\tAx3\tBy1\tBy2\tBy3\tI   \tJ   \t'
+		pre_line = 'K\tBy1\tBy2\tBy3\tAx1\tAx2\tAx3\tI   \tJ   \t'
 		print(pre_line)
 		for i, row in enumerate(self.result_matrix):
 			line ='{}\t{}'.format(i, '\t'.join(['{}'.format(elem) for elem in row]))
@@ -114,8 +115,8 @@ class BraunRobinsGame(AnalyticalGame):
 		print('max(Bi)\t{}   {}\{}'.format('\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]), self.np_matrix.max(axis=0).min(), self.np_matrix.min(axis=1).max()))
 		print('=============================')
 		
-		posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]+1  # чистая стратегия игрока B на линии
-		posB = np.nonzero(self.np_matrix.min(axis=1) == self.lower_game_price)[0][0]+1  # чистая стратегия игрока A на линии
+		posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]  # чистая стратегия игрока B на линии
+		posB = np.nonzero(self.np_matrix.min(axis=1) == self.lower_game_price)[0][0]  # чистая стратегия игрока A на линии
 		print(posA, posB)
 		return self.top_game_price, self.lower_game_price
 		#print(price_game_b, price_game_a, self.top_game_price, self.lower_game_price)
