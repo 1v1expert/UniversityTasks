@@ -75,6 +75,7 @@ class BraunRobinsGame(AnalyticalGame):
 				self.winnings_a = np.delete(self.winnings_a, (0), axis=0)  # remove first line
 				self.winnings_b = np.delete(self.winnings_b, (0), axis=0)  # remove first line
 				
+			self.iteration(cycle)
 		# for i, row in enumerate(self.static_matrix):
 		# 	#if not i:
 		# 	#	posI, posJ = get_price_game()
@@ -92,7 +93,9 @@ class BraunRobinsGame(AnalyticalGame):
 		self.pprint_payment_matrix()
 			#self.winnings_a.put(self.np_matrix.max(axis=0))
 		#print(self.winnings_a, self.winnings_b)
-		
+	
+	def iteration(self, iterr):
+		print(iterr)
 	def pprint_payment_matrix(self):
 		self.winnings_ab = np.column_stack((self.winnings_b, self.winnings_a))
 		self.result_matrix = np.column_stack((self.winnings_ab, self.static_matrix))
