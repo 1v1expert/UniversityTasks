@@ -114,6 +114,9 @@ class BraunRobinsGame(AnalyticalGame):
 		print('max(Bi)\t{}   {}\{}'.format('\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]), self.np_matrix.max(axis=0).min(), self.np_matrix.min(axis=1).max()))
 		print('=============================')
 		
+		posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]+1  # чистая стратегия игрока B на линии
+		posB = np.nonzero(self.np_matrix.min(axis=1) == self.lower_game_price)[0][0]+1  # чистая стратегия игрока A на линии
+		print(posA, posB)
 		return self.top_game_price, self.lower_game_price
 		#print(price_game_b, price_game_a, self.top_game_price, self.lower_game_price)
 
