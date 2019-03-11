@@ -79,15 +79,12 @@ class BraunRobinsGame(AnalyticalGame):
 			
 		self.pprint_payment_matrix()
 			#self.winnings_a.put(self.np_matrix.max(axis=0))
-		print(self.winnings_a, self.winnings_b)
+		#print(self.winnings_a, self.winnings_b)
 		
 	def pprint_payment_matrix(self):
 		self.winnings_ab = np.column_stack((self.winnings_a, self.winnings_b))
 		self.result_matrix = np.column_stack((self.winnings_ab, self.static_matrix))
-		#print(self.result_matrix, len(self.result_matrix))
-		#from pprint import pprint
-		#with printoptions(threshold=4, edgeitems=20, linewidth=80, suppress=True ):
-		#	print('{}{}'.format(*self.result_matrix))
+		
 		pre_line = 'Ax1\tAx2\tAx3\tBy1\tBy2\tBy3'
 		print(pre_line)
 		for i, row in enumerate(self.result_matrix):
