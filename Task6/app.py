@@ -57,7 +57,7 @@ class BraunRobinsGame(AnalyticalGame):
 		self.winnings_ab = None
 		self.get_price_game()
 		
-		self.static_matrix = np.array([[1, 1, 0, 0], [2,2,2,2]])
+		self.static_matrix = None  # np.array([[1, 1, 0, 0]])
 		self.winnings_a = np.array([np.ones(self.n)])
 		self.winnings_b = np.array([np.ones(self.n)])
 		
@@ -66,18 +66,29 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(ll.index([3, 0, 1]))
 	
 	def building_payment_matrix(self):
-		for i, row in enumerate(self.static_matrix):
-			
-			#print(i, row)
-			x1, y1 = row[0]-1, row[1]-1
-			#print(self.np_matrix[:, x1])
-			#print()
-			self.winnings_a = np.vstack([self.winnings_a, self.np_matrix[:, x1]])
-			self.winnings_b = np.vstack([self.winnings_b, self.np_matrix[y1, :]])
-			if not i:
+		for cycle in range(12):
+			if not cycle:
+				posI, posJ = self.get_price_game()
+				self.static_matrix = np.array([[posI+1, posJ+1, 0, 0]])
+				self.winnings_a = np.vstack([self.winnings_a, self.np_matrix[:, posJ]])
+				self.winnings_b = np.vstack([self.winnings_b, self.np_matrix[posI, :]])
 				self.winnings_a = np.delete(self.winnings_a, (0), axis=0)  # remove first line
 				self.winnings_b = np.delete(self.winnings_b, (0), axis=0)  # remove first line
-			
+				
+		# for i, row in enumerate(self.static_matrix):
+		# 	#if not i:
+		# 	#	posI, posJ = get_price_game()
+		#
+		# 	#print(i, row)
+		# 	x1, y1 = row[0]-1, row[1]-1
+		# 	#print(self.np_matrix[:, x1])
+		# 	#print()
+		# 	self.winnings_a = np.vstack([self.winnings_a, self.np_matrix[:, x1]])
+		# 	self.winnings_b = np.vstack([self.winnings_b, self.np_matrix[y1, :]])
+		# 	if not i:
+		# 		self.winnings_a = np.delete(self.winnings_a, (0), axis=0)  # remove first line
+		# 		self.winnings_b = np.delete(self.winnings_b, (0), axis=0)  # remove first line
+		
 		self.pprint_payment_matrix()
 			#self.winnings_a.put(self.np_matrix.max(axis=0))
 		#print(self.winnings_a, self.winnings_b)
@@ -89,7 +100,7 @@ class BraunRobinsGame(AnalyticalGame):
 		pre_line = 'K\tBy1\tBy2\tBy3\tAx1\tAx2\tAx3\tI   \tJ   \t'
 		print(pre_line)
 		for i, row in enumerate(self.result_matrix):
-			line ='{}\t{}'.format(i, '\t'.join(['{}'.format(elem) for elem in row]))
+			line ='{}\t{}'.format(i+1, '\t'.join(['{}'.format(elem) for elem in row]))
 			print(line)
 
 	
@@ -117,8 +128,8 @@ class BraunRobinsGame(AnalyticalGame):
 		
 		posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]  # чистая стратегия игрока B на линии
 		posB = np.nonzero(self.np_matrix.min(axis=1) == self.lower_game_price)[0][0]  # чистая стратегия игрока A на линии
-		print(posA, posB)
-		return self.top_game_price, self.lower_game_price
+		#print(posA, posB)
+		return posB, posA
 		#print(price_game_b, price_game_a, self.top_game_price, self.lower_game_price)
 
 		
