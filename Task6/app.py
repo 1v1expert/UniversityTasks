@@ -3,8 +3,7 @@ import json
 
 #import numpy as np
 import contextlib
-
-
+EPSILONE_CONST = 0.1
 @contextlib.contextmanager
 def printoptions(*args, **kwargs):
     original = np.get_printoptions()
@@ -55,8 +54,8 @@ class BraunRobinsGame(AnalyticalGame):
 		self.lower_game_price = None
 		self.result_matrix = None
 		self.winnings_ab = None
-		self.get_price_game()
-		
+		#self.get_price_game()
+		self.np_matrix = self.np_matrix.transpose() # for test
 		self.static_matrix = None  # np.array([[1, 1, 0, 0]])
 		self.winnings_a = np.array([np.ones(self.n)])
 		self.winnings_b = np.array([np.ones(self.n)])
@@ -66,17 +65,36 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(ll.index([3, 0, 1]))
 	
 	def building_payment_matrix(self):
-		for cycle in range(12):
+		for cycle in range(25):
 			if not cycle:
 				posI, posJ = self.get_price_game()
-				self.static_matrix = np.array([[posI+1, posJ+1, 0, 0]])
+				self.static_matrix = np.array([[
+					posI+1,
+					posJ+1,
+					self.np_matrix[posI, :].min()/(cycle+1),
+					self.np_matrix[:, posJ].max()/(cycle+1),
+					(self.np_matrix[posI, :].min() / (cycle + 1) + self.np_matrix[:, posJ].max()/(cycle+1))/2]])
 				self.winnings_a = np.vstack([self.winnings_a, self.np_matrix[:, posJ]])
 				self.winnings_b = np.vstack([self.winnings_b, self.np_matrix[posI, :]])
 				self.winnings_a = np.delete(self.winnings_a, (0), axis=0)  # remove first line
 				self.winnings_b = np.delete(self.winnings_b, (0), axis=0)  # remove first line
-				
-			self.iteration(cycle)
-		# for i, row in enumerate(self.static_matrix):
+			else:
+				rowB, posI, rowA, posJ = self.iteration(cycle-1)
+				self.static_matrix = np.vstack([
+					self.static_matrix, [
+						posI+1,
+						posJ+1,
+						rowB.min()/(cycle+1),
+						rowA.max()/(cycle+1),
+						(rowB.min()/(cycle+1) + rowA.max()/(cycle+1))/2]])
+				self.winnings_a = np.vstack([self.winnings_a, rowA])
+				self.winnings_b = np.vstack([self.winnings_b, rowB])
+			epsilone = self.static_matrix[:, 3].min() - self.static_matrix[:, 2].max()
+			if epsilone <= EPSILONE_CONST:
+				print('BREAK with epsilone = {}'.format(epsilone))
+				break
+			#print(epsilone)
+			# for i, row in enumerate(self.static_matrix):
 		# 	#if not i:
 		# 	#	posI, posJ = get_price_game()
 		#
@@ -95,16 +113,39 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(self.winnings_a, self.winnings_b)
 	
 	def iteration(self, iterr):
-		print(iterr)
+		max_a = self.winnings_a[iterr].max()  # нахождение макисмального элемента у играка А
+		pos_max_a = np.nonzero(self.winnings_a[iterr] == max_a)[0][0]  # получение позиции максимального элемента
+		line = self.np_matrix[pos_max_a, :]  # взятие соответствующей строки матрица игрока А
+		new_row_winnings_b = self.winnings_b[iterr] + line  # сложение результатов
+		# ======  другой игрок
+		min_b = new_row_winnings_b.min()
+		pos_min_b = np.nonzero(new_row_winnings_b == min_b)[0][0]
+		row = self.np_matrix[:, pos_min_b]
+		new_row_winnings_a = self.winnings_a[iterr] + row
+		#print(pos_max_a+1, new_row_winnings_b, pos_min_b+1, new_row_winnings_a)
+		#print(self.winnings_b[iterr], self.winnings_a[iterr], max_a, pos_max_a, self.np_matrix[pos_max_a, :], new_row_winnings_b)
+		return new_row_winnings_b, pos_max_a, new_row_winnings_a, pos_min_b
 	def pprint_payment_matrix(self):
 		self.winnings_ab = np.column_stack((self.winnings_b, self.winnings_a))
 		self.result_matrix = np.column_stack((self.winnings_ab, self.static_matrix))
 		
-		pre_line = 'K\tBy1\tBy2\tBy3\tAx1\tAx2\tAx3\tI   \tJ   \t'
+		pre_line = 'K\tBy1\tBy2\tBy3\tAx1\tAx2\tAx3\tI\tJ\tVmin\tVmax\tVsr'
 		print(pre_line)
 		for i, row in enumerate(self.result_matrix):
-			line ='{}\t{}'.format(i+1, '\t'.join(['{}'.format(elem) for elem in row]))
+			line ='{}\t{}'.format(
+				i+1, '\t'.join(
+					[
+						'{0:.2f}'.format(elem) if j not in (6, 7) else '{}'.format(int(elem)) for j, elem in enumerate(row)
+					]
+				)
+			)
 			print(line)
+		print('Цена игры, W = {0:.2f}'.format(self.static_matrix[len(self.static_matrix[:, 4])-1, 4]))
+		# maybe fix
+		#strategy_1 = [np.nonzero(len(list(self.static_matrix[:, 0] == i)[0])) for i in range(1, 4) ]
+		#print(strategy_1)
+		#print('Стратегия игрока 1: '.format(self.static_matrix[:, 2]))
+		#print('Стратегия игрока 2: '.format())
 
 	
 	def get_price_game(self):
