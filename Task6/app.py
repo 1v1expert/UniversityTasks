@@ -29,6 +29,8 @@ class AnalyticalGame(object):
 		
 		if self.calculate:
 			self.optimal_strategy_x, self.optimal_strategy_y, self.price = self._get_decision_game()
+			
+		self.print_result()
 
 	def _get_decision_game(self):
 		self.denominator = np.dot(np.dot(self.ones, self.inv_matrix),  self.ones.transpose())
@@ -55,7 +57,9 @@ class BraunRobinsGame(AnalyticalGame):
 		self.result_matrix = None
 		self.winnings_ab = None
 		#self.get_price_game()
-		self.np_matrix = self.np_matrix.transpose() # for test
+		# TODO: maybe not transpose matrix
+		self.np_matrix = self.np_matrix #.transpose()  # for test
+		
 		self.static_matrix = None  # np.array([[1, 1, 0, 0]])
 		self.winnings_a = np.array([np.ones(self.n)])
 		self.winnings_b = np.array([np.ones(self.n)])
@@ -65,7 +69,7 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(ll.index([3, 0, 1]))
 	
 	def building_payment_matrix(self):
-		for cycle in range(25):
+		for cycle in range(100):
 			if not cycle:
 				posI, posJ = self.get_price_game()
 				self.static_matrix = np.array([[
@@ -90,8 +94,9 @@ class BraunRobinsGame(AnalyticalGame):
 				self.winnings_a = np.vstack([self.winnings_a, rowA])
 				self.winnings_b = np.vstack([self.winnings_b, rowB])
 			epsilone = self.static_matrix[:, 3].min() - self.static_matrix[:, 2].max()
+			print('Epsilon {} ->> {}'.format(cycle+1, epsilone))
 			if epsilone <= EPSILONE_CONST:
-				print('BREAK with epsilone = {}'.format(epsilone))
+				print('BREAK with epsilon = {}'.format(epsilone))
 				break
 			#print(epsilone)
 			# for i, row in enumerate(self.static_matrix):
@@ -141,6 +146,12 @@ class BraunRobinsGame(AnalyticalGame):
 			)
 			print(line)
 		print('Цена игры, W = {0:.2f}'.format(self.static_matrix[len(self.static_matrix[:, 4])-1, 4]))
+		br_rob_strategy1 = [len(np.where(self.static_matrix[:, 0] == i)[0])/len(self.result_matrix) for i in range(1, 4, 1)]
+		br_rob_strategy2 = [len(np.where(self.static_matrix[:, 1] == i)[0]) / len(self.result_matrix) for i in
+		                    range(1, 4, 1)]
+		print('Стратегия игрока 1: {}'.format(br_rob_strategy1))
+		print('Стратегия игрока 2: {}'.format(br_rob_strategy2))
+		#print(br_rob_strategy1)
 		# maybe fix
 		#strategy_1 = [np.nonzero(len(list(self.static_matrix[:, 0] == i)[0])) for i in range(1, 4) ]
 		#print(strategy_1)
@@ -180,8 +191,8 @@ class BraunRobinsGame(AnalyticalGame):
 		
 if __name__ == '__main__':
 	test_matrix = [[2, 1, 3], [3, 0, 1], [1, 2, 1]]
-	AnalyticalGame(matrix=test_matrix, calculate=True)
-	BraunRobinsGame(matrix=test_matrix, calculate=True)
+	matrix = [[17, 4, 9], [0, 16, 9], [12, 2, 19]]
+	BraunRobinsGame(matrix=matrix, calculate=True)
 	
 #with printoptions(threshold=4, edgeitems=20, linewidth=80, suppress=True):
 # print(x)
