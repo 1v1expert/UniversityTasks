@@ -14,7 +14,7 @@ def printoptions(*args, **kwargs):
         np.set_printoptions(**original)
 
 class AnalyticalGame(object):
-	
+	''' Аналитический(матричный) метод решения матричной игры с нулевой суммой '''
 	def __init__(self, **args):
 		self.matrix = args.get('matrix', None)
 		self.calculate = args.get('calculate', None)
@@ -36,7 +36,7 @@ class AnalyticalGame(object):
 		self.denominator = np.dot(np.dot(self.ones, self.inv_matrix),  self.ones.transpose())
 		x = np.dot(self.inv_matrix, self.ones.transpose()) / self.denominator
 		y = np.dot(self.ones, self.inv_matrix) / self.denominator
-		return x, y, 1 / self.denominator
+		return np.around(x, decimals=2), np.around(y, decimals=2), 1 / self.denominator
 	
 	def print_result(self):
 		if self.print:
@@ -130,6 +130,7 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(pos_max_a+1, new_row_winnings_b, pos_min_b+1, new_row_winnings_a)
 		#print(self.winnings_b[iterr], self.winnings_a[iterr], max_a, pos_max_a, self.np_matrix[pos_max_a, :], new_row_winnings_b)
 		return new_row_winnings_b, pos_max_a, new_row_winnings_a, pos_min_b
+	
 	def pprint_payment_matrix(self):
 		self.winnings_ab = np.column_stack((self.winnings_b, self.winnings_a))
 		self.result_matrix = np.column_stack((self.winnings_ab, self.static_matrix))
@@ -146,8 +147,8 @@ class BraunRobinsGame(AnalyticalGame):
 			)
 			print(line)
 		print('Цена игры, W = {0:.2f}'.format(self.static_matrix[len(self.static_matrix[:, 4])-1, 4]))
-		br_rob_strategy1 = [len(np.where(self.static_matrix[:, 0] == i)[0])/len(self.result_matrix) for i in range(1, 4, 1)]
-		br_rob_strategy2 = [len(np.where(self.static_matrix[:, 1] == i)[0]) / len(self.result_matrix) for i in
+		br_rob_strategy1 = [round(len(np.where(self.static_matrix[:, 0] == i)[0])/len(self.result_matrix), 2) for i in range(1, 4, 1)]
+		br_rob_strategy2 = [round(len(np.where(self.static_matrix[:, 1] == i)[0]) / len(self.result_matrix), 2) for i in
 		                    range(1, 4, 1)]
 		print('Стратегия игрока 1: {}'.format(br_rob_strategy1))
 		print('Стратегия игрока 2: {}'.format(br_rob_strategy2))
