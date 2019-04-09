@@ -179,7 +179,11 @@ class BraunRobinsGame(AnalyticalGame):
 		for i, row in enumerate(self.np_matrix):
 			line ='A{}\t{}\t{}'.format(i+1, '\t'.join(['{}'.format(elem) for elem in row]), self.np_matrix.min(axis=1)[i])
 			print(line)
-		print('max(Bi)\t{}   {}\{}'.format('\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]), self.np_matrix.max(axis=0).min(), self.np_matrix.min(axis=1).max()))
+		print('max(Bi)\t{}   {}\{}'.format(
+			'\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]),
+			self.np_matrix.max(axis=0).min(),
+			self.np_matrix.min(axis=1).max())
+		)
 		print('=============================')
 		
 		posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]  # чистая стратегия игрока B на линии
@@ -189,11 +193,5 @@ class BraunRobinsGame(AnalyticalGame):
 		#print(price_game_b, price_game_a, self.top_game_price, self.lower_game_price)
 
 		
-		
-if __name__ == '__main__':
-	test_matrix = [[2, 1, 3], [3, 0, 1], [1, 2, 1]]
-	matrix = [[17, 4, 9], [0, 16, 9], [12, 2, 19]]
-	BraunRobinsGame(matrix=matrix, calculate=True)
-	
 #with printoptions(threshold=4, edgeitems=20, linewidth=80, suppress=True):
 # print(x)
