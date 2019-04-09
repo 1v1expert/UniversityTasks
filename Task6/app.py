@@ -1,7 +1,6 @@
 import numpy as np
 import json
 
-#import numpy as np
 import contextlib
 EPSILONE_CONST = 0.1
 @contextlib.contextmanager
