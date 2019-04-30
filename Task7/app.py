@@ -1,26 +1,44 @@
 import numpy as np
 
 
+class SolveIteration(object):
+	
+	def __init__(self):
+		pass
+	
+	def build_step_matrix(self):
+		pass
+	
+	
 class AnalyticalGame(object):
 	
-	def __init__(self, **args):
-		[self.__setattr__(elem, float(args.get(elem))) for elem in args.keys()]
+	def __init__(self, **kwargs):
+		[self.__setattr__(elem, float(kwargs.get(elem))) for elem in kwargs.keys()]
 		#[self.__setattr__(elem, args[i]) for i, elem in enumerate(('a', 'b', 'c', 'd', 'e'))]
 		Hxx = 2 * self.a
 		Hyy = 2 * self.b
+		self.x, self.y, self.h = None, None, None
 		
 		if self.check_convex_concave(Hxx, Hyy):
 			self._solve_lin()
 			#self._solve_lin_precision()
-	
+		
+	def __enter__(self, **kwargs):
+		self.__init__(**kwargs)
+		return self
+		
+	def __exit__(self, exc_type, exc_val, exc_tb):
+		print('X: {}, Y: {}, H: {}'.format(self.x, self.y, self.h))
+		
 	def _solve_lin_precision(self):
 		"""
 		y = (2*a*e - c*d)/(c^2 - 4*a*b)
 		x = -(c*y + d)/(2*a)
 		"""
-		y = (2 * self.a * self.e - self.c * self.d)/(self.c * self.c - 4 * self.a * self.b)
-		x = - (self.c * y + self.d)/(2*self.a)
-		print(y, x, self.H(x, y))
+		self.y = (2 * self.a * self.e - self.c * self.d)/(self.c * self.c - 4 * self.a * self.b)
+		self.x = - (self.c * self.y + self.d)/(2*self.a)
+		self.h = self._get_h()
+		#print(y, x, self.H(x, y))
 		
 	def _solve_lin(self):
 		"""Solve the system of equations dH(x)/d(x) = 2 * a * x + c * y + d and dH(y)/d(y) = 2 * b * y + c * x + e """
@@ -28,11 +46,14 @@ class AnalyticalGame(object):
 		Hy = [2 * self.b, self.c]
 		system_equations = np.array([Hx, Hy], dtype=np.float)
 		zeros = np.array([-self.d, -self.e], dtype=np.float)
-		x, y = np.linalg.solve(system_equations, zeros)
-		print('X: {}, Y: {}, H: {}'.format(x, y, self.H(x, y)))
-	
-	def H(self, x, y):
+		self.x, self.y = np.linalg.solve(system_equations, zeros)
+		self.h = self._get_h()
+		
+	def _get_h(self, x=None, y=None):
 		"""H(x,y) = a*x^2 + b*y^2 + c*x*y + d*x + e*y"""
+		if not (x or y):
+			x, y = self.x, self.y
+		
 		return self.a * pow(x, 2) + self.b * pow(y, 2) + self.c * x * y + self.d * x + self.e * y
 		
 	@staticmethod
@@ -56,8 +77,6 @@ if '__main__' == __name__:
 	ponomorenko_matrix = {
 		'a': -10, 'b': 15, 'c': float(60), 'd': float(-12), 'e': float(-48)
 	}
-	#print('y= ', )
-	#from decimal import *
-	# matrix = [-3, 3 / 2, 18 / 5, -18 / 50, -72 / 25]
-	instance = AnalyticalGame(**ponomorenko_matrix)
-	print(instance.H(0, 1))
+
+	with AnalyticalGame(**ponomorenko_matrix) as game:
+		print(game._get_h(0.5,0))
