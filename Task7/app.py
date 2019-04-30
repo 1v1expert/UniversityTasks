@@ -6,8 +6,8 @@ class SolveIteration(object):
 	def __init__(self):
 		pass
 	
-	def build_step_matrix(self):
-		pass
+	
+		
 	
 	
 class AnalyticalGame(object):
@@ -51,7 +51,7 @@ class AnalyticalGame(object):
 		
 	def _get_h(self, x=None, y=None):
 		"""H(x,y) = a*x^2 + b*y^2 + c*x*y + d*x + e*y"""
-		if not (x or y):
+		if not (x!=None or y!=None):
 			x, y = self.x, self.y
 		
 		return self.a * pow(x, 2) + self.b * pow(y, 2) + self.c * x * y + self.d * x + self.e * y
@@ -63,6 +63,23 @@ class AnalyticalGame(object):
 		else:
 			return False
 	
+	@staticmethod
+	def build_metric(n):
+		step = 1/n
+		first_step = 0
+		return [first_step + i*step for i in range(n+1)]
+	
+	def build_step_matrix(self, n):
+		gradation = self.build_metric(n)
+		matrix = []
+		for i in range(n+1):
+			line = []
+			for j in range(n+1):
+				value = self._get_h(gradation[i], gradation[j])
+				line.append(value)
+			matrix.append(line)
+		print(matrix)
+		
 	def _solve(self):
 		pass
 	
@@ -80,3 +97,4 @@ if '__main__' == __name__:
 
 	with AnalyticalGame(**ponomorenko_matrix) as game:
 		print(game._get_h(0.5,0))
+		game.build_step_matrix(2)
