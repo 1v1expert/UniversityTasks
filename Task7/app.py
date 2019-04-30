@@ -2,7 +2,7 @@ import numpy as np
 
 
 class AnalyticalGame(object):
-	"""H(x,y) = a*x^2 + b*y^2 + c*x*y + d*x * e*y"""
+	
 	def __init__(self, **args):
 		[self.__setattr__(elem, float(args.get(elem))) for elem in args.keys()]
 		#[self.__setattr__(elem, args[i]) for i, elem in enumerate(('a', 'b', 'c', 'd', 'e'))]
@@ -27,12 +27,12 @@ class AnalyticalGame(object):
 		Hx = [2 * self.a, self.c]
 		Hy = [2 * self.b, self.c]
 		system_equations = np.array([Hx, Hy], dtype=np.float)
-		print(vars(self))
 		zeros = np.array([-self.d, -self.e], dtype=np.float)
 		x, y = np.linalg.solve(system_equations, zeros)
 		print('X: {}, Y: {}, H: {}'.format(x, y, self.H(x, y)))
 	
 	def H(self, x, y):
+		"""H(x,y) = a*x^2 + b*y^2 + c*x*y + d*x + e*y"""
 		return self.a * pow(x, 2) + self.b * pow(y, 2) + self.c * x * y + self.d * x + self.e * y
 		
 	@staticmethod
@@ -53,7 +53,11 @@ if '__main__' == __name__:
 	matrix = {
 		'a': -3, 'b': 3/2, 'c': float(18/5), 'd': float(-18/50), 'e': float(-72/25)
 	}
+	ponomorenko_matrix = {
+		'a': -10, 'b': 15, 'c': float(60), 'd': float(-12), 'e': float(-48)
+	}
 	#print('y= ', )
 	#from decimal import *
 	# matrix = [-3, 3 / 2, 18 / 5, -18 / 50, -72 / 25]
-	AnalyticalGame(**matrix)
+	instance = AnalyticalGame(**ponomorenko_matrix)
+	print(instance.H(0, 1))
