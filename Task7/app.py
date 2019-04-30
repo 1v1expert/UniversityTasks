@@ -11,7 +11,17 @@ class AnalyticalGame(object):
 		
 		if self.check_convex_concave(Hxx, Hyy):
 			self._solve_lin()
-			
+			#self._solve_lin_precision()
+	
+	def _solve_lin_precision(self):
+		"""
+		y = (2*a*e - c*d)/(c^2 - 4*a*b)
+		x = -(c*y + d)/(2*a)
+		"""
+		y = (2 * self.a * self.e - self.c * self.d)/(self.c * self.c - 4 * self.a * self.b)
+		x = - (self.c * y + self.d)/(2*self.a)
+		print(y, x, self.H(x, y))
+		
 	def _solve_lin(self):
 		"""Solve the system of equations dH(x)/d(x) = 2 * a * x + c * y + d and dH(y)/d(y) = 2 * b * y + c * x + e """
 		Hx = [2 * self.a, self.c]
@@ -20,12 +30,10 @@ class AnalyticalGame(object):
 		print(vars(self))
 		zeros = np.array([-self.d, -self.e], dtype=np.float)
 		x, y = np.linalg.solve(system_equations, zeros)
-		#H =
-		#x , y = solve
 		print('X: {}, Y: {}, H: {}'.format(x, y, self.H(x, y)))
 	
 	def H(self, x, y):
-		return self.a * pow(x, 2) + self.b * pow(y, 2) + self.c * x * y + self.d * x * self.e * y
+		return self.a * pow(x, 2) + self.b * pow(y, 2) + self.c * x * y + self.d * x + self.e * y
 		
 	@staticmethod
 	def check_convex_concave(Hxx, Hyy):
@@ -40,10 +48,12 @@ class AnalyticalGame(object):
 	def custom_solve_equation(self):
 		pass
 
+
 if '__main__' == __name__:
 	matrix = {
 		'a': -3, 'b': 3/2, 'c': float(18/5), 'd': float(-18/50), 'e': float(-72/25)
 	}
+	#print('y= ', )
 	#from decimal import *
 	# matrix = [-3, 3 / 2, 18 / 5, -18 / 50, -72 / 25]
 	AnalyticalGame(**matrix)
