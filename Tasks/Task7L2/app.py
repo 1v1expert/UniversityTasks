@@ -1,16 +1,13 @@
 import numpy as np
 
-
+import sys
 class SolveIteration(object):
 	
 	def __init__(self):
 		pass
 	
 	
-		
-	
-	
-class AnalyticalGame(object):
+class OptimalStrategy(object):
 	
 	def __init__(self, **kwargs):
 		[self.__setattr__(elem, float(kwargs.get(elem))) for elem in kwargs.keys()]
@@ -78,7 +75,8 @@ class AnalyticalGame(object):
 				value = self._get_h(gradation[i], gradation[j])
 				line.append(value)
 			matrix.append(line)
-		print(matrix)
+		# print(matrix)
+		return matrix
 		
 	def _solve(self):
 		pass
@@ -96,5 +94,7 @@ if '__main__' == __name__:
 	}
 
 	with AnalyticalGame(**ponomorenko_matrix) as game:
-		print(game._get_h(0.5,0))
-		game.build_step_matrix(2)
+		print(game._get_h(0.5, 0))
+		matrix = game.build_step_matrix(2)
+		print(matrix)
+	print(sys.path)

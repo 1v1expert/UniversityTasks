@@ -12,6 +12,7 @@ def printoptions(*args, **kwargs):
     finally:
         np.set_printoptions(**original)
 
+
 class AnalyticalGame(object):
 	''' Аналитический(матричный) метод решения матричной игры с нулевой суммой '''
 	def __init__(self, **args):
