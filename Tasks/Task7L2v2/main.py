@@ -3,9 +3,9 @@ import sys
 from sympy import Rational
 
 from kernel_function import KernelFunction
-from solvers.analytical_solver import AnalyticalSolver
-from Tasks.Task7L2v2.solvers.base_solver import NoSolutionException
-from Tasks.Task7L2v2.solvers.numerical_solver import NumericalSolver
+from analytical_solver import AnalyticalSolver
+from base_solver import NoSolutionException
+from numerical_solver import NumericalSolver
 
 
 def compute_analytical_solution(kernel_function: KernelFunction):
@@ -21,6 +21,8 @@ def compute_analytical_solution(kernel_function: KernelFunction):
     print('x={:2.3f} y={:2.3f} H={:2.3f}\n\n'.format(
         float(x), float(y), float(H))
     )
+    
+    
 def compute_numerical_solution(kernel_function: KernelFunction):
     print('ЧИСЛЕННОЕ РЕШЕНИЕ')
     try:

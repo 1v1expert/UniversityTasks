@@ -2,9 +2,9 @@ from typing import Callable, Tuple, Any, List
 
 from sympy import Rational, Matrix
 
-from Tasks.Task7L2v2.braun_robinson.table import BraunRobinsonTable
-from Tasks.Task7L2v2.kernel_function import KernelFunction
-from Tasks.Task7L2v2.solvers.base_solver import BaseSolver
+from table import BraunRobinsonTable
+from kernel_function import KernelFunction
+from base_solver import BaseSolver
 
 
 class NumericalSolver(BaseSolver):
