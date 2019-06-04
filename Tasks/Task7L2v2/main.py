@@ -2,10 +2,10 @@ import sys
 
 from sympy import Rational
 
-from lab7.kernel_function import KernelFunction
-from lab7.solvers.analytical_solver import AnalyticalSolver
-from lab7.solvers.base_solver import NoSolutionException
-from lab7.solvers.numerical_solver import NumericalSolver
+from kernel_function import KernelFunction
+from solvers.analytical_solver import AnalyticalSolver
+from Tasks.Task7L2v2.solvers.base_solver import NoSolutionException
+from Tasks.Task7L2v2.solvers.numerical_solver import NumericalSolver
 
 
 def compute_analytical_solution(kernel_function: KernelFunction):

@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from sympy import Matrix, Rational
 
-from lab7.braun_robinson.algorithm_step import BraunRobinsonAlgorithmStep
+from Tasks.Task7L2v2.braun_robinson.algorithm_step import BraunRobinsonAlgorithmStep
 
 
 class BraunRobinsonTable:

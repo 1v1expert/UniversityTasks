@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Tuple
 
-from lab7.kernel_function import KernelFunction
+from Tasks.Task7L2v2.kernel_function import KernelFunction
 
 
 class NoSolutionException(Exception):

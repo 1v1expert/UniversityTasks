@@ -2,8 +2,8 @@ from typing import Tuple
 
 from sympy import solveset, Eq, Rational
 
-from lab7.kernel_function import KernelFunction
-from lab7.solvers.base_solver import BaseSolver
+from Tasks.Task7L2v2.kernel_function import KernelFunction
+from Tasks.Task7L2v2.solvers.base_solver import BaseSolver
 
 
 class AnalyticalSolver(BaseSolver):
