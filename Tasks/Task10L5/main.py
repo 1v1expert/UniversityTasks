@@ -24,6 +24,7 @@ class PositionalGame(object):
 	def reverse_induction_step(self, parent_name, player=0):
 		wins = []
 		max_win = 0
+		# print(self.tree[parent_name])
 		for name in self.tree[parent_name].keys():
 			if 'wins' not in self.tree[name] and name > parent_name:
 				self.reverse_induction_step(name, (player + 1) % self.players_count)
