@@ -66,6 +66,7 @@ def print_result(bimatrix):
 		print(" ".join(line))
 	print()
 
+
 if __name__ == "__main__":
 	crosswayBiMatrix = np.array([[[1, 0.5], [2, 0]], [[1, 2], [0.5, 0]], ], float)
 	familyDisputeBiMatrix = np.array([[[4, 0], [0, 1]], [[1, 0], [0, 4]], ], float)

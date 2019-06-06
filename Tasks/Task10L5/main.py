@@ -70,7 +70,8 @@ class PositionalGame(object):
 			
 		colors_list = ['blue', 'green', 'red', 'yellow', 'brown', 'purple']
 		for way in self.ways:
-			color = colors_list.pop(0)
+			# color = colors_list.pop(0)
+			color = 'red'
 			for i in range(len(way) - 1):
 				edge = graph.get_edge(str(way[i]), str(way[i + 1]))[0]
 				if not edge.get('color'):
