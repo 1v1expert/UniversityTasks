@@ -200,6 +200,22 @@ class BraunRobinsGame(AnalyticalGame):
             0]  # чистая стратегия игрока A на линии
         # print(posA, posB)
         return posB, posA
+
+
+if __name__ == '__main__':
+    test_matrix = [[2, 1, 3], [3, 0, 1], [1, 2, 1]]
+    matrix = [[17, 4, 9], [0, 16, 9], [12, 2, 19]]
+    AnalyticalGame(matrix=matrix, calculate=True, print=True)
+    BraunRobinsGame(matrix=matrix, calculate=True, print=False)
+    
+    # ponomorenko_matrix = {'a': -10, 'b': 15, 'c': float(60), 'd': float(-12), 'e': float(-48)}
+    # with OG(**ponomorenko_matrix) as game:
+    # 	print(game._get_h(x=0, y=0), game._get_h(x=1, y=0), game._get_h(x=0, y=1), game._get_h(x=1, y=1))
+    # 	matrix = game.build_step_matrix(54)
+    #
+    # 	print(matrix)
+    # 	BG(matrix=matrix, calculate=True, print=False)
+    
     # print(price_game_b, price_game_a, self.top_game_price, self.lower_game_price)
 
 # with printoptions(threshold=4, edgeitems=20, linewidth=80, suppress=True):
