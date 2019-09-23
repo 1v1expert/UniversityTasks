@@ -103,25 +103,8 @@ class BraunRobinsGame(AnalyticalGame):
             if epsilone <= EPSILONE_CONST:
                 print('BREAK with epsilon = {}'.format(epsilone))
                 break
-        # print(epsilone)
-        # for i, row in enumerate(self.static_matrix):
-        # 	#if not i:
-        # 	#	posI, posJ = get_price_game()
-        #
-        # 	#print(i, row)
-        # 	x1, y1 = row[0]-1, row[1]-1
-        # 	#print(self.np_matrix[:, x1])
-        # 	#print()
-        # 	self.winnings_a = np.vstack([self.winnings_a, self.np_matrix[:, x1]])
-        # 	self.winnings_b = np.vstack([self.winnings_b, self.np_matrix[y1, :]])
-        # 	if not i:
-        # 		self.winnings_a = np.delete(self.winnings_a, (0), axis=0)  # remove first line
-        # 		self.winnings_b = np.delete(self.winnings_b, (0), axis=0)  # remove first line
-        
         self.pprint_payment_matrix()
-    
-    # self.winnings_a.put(self.np_matrix.max(axis=0))
-    # print(self.winnings_a, self.winnings_b)
+
     
     def iteration(self, iterr):
         max_a = self.winnings_a[iterr].max()  # нахождение макисмального элемента у играка А
@@ -160,13 +143,6 @@ class BraunRobinsGame(AnalyticalGame):
                             range(1, 4, 1)]
         print('Стратегия игрока 1: {}'.format(br_rob_strategy1))
         print('Стратегия игрока 2: {}'.format(br_rob_strategy2))
-    
-    # print(br_rob_strategy1)
-    # maybe fix
-    # strategy_1 = [np.nonzero(len(list(self.static_matrix[:, 0] == i)[0])) for i in range(1, 4) ]
-    # print(strategy_1)
-    # print('Стратегия игрока 1: '.format(self.static_matrix[:, 2]))
-    # print('Стратегия игрока 2: '.format())
     
     def get_price_game(self):
         def check_point(a, b):  # проверка наличия седловой точки
