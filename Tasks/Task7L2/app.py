@@ -3,6 +3,42 @@ import numpy as np
 import sys
 
 
+class AnalyticalGame(object):
+    ''' Аналитический(матричный) метод решения матричной игры с нулевой суммой '''
+    
+    def __init__(self, **args):
+        self.matrix = args.get('matrix', None)
+        self.calculate = args.get('calculate', None)
+        self.print = args.get('print', True)
+        
+        self.n = len(self.matrix)  # lines
+        self.ones = np.ones(self.n)
+        self.np_matrix = np.array(self.matrix, dtype=np.float)
+        self.m = self.np_matrix.size / self.n  # columns
+        self.inv_matrix = np.linalg.inv(self.np_matrix)
+        self.optimal_strategy_x, self.optimal_strategy_y = None, None
+        
+        if self.calculate:
+            self.optimal_strategy_x, self.optimal_strategy_y, self.price = self._get_decision_game()
+        
+        self.print_result()
+    
+    def _get_decision_game(self):
+        self.denominator = np.dot(np.dot(self.ones, self.inv_matrix), self.ones.transpose())
+        x = np.dot(self.inv_matrix, self.ones.transpose()) / self.denominator
+        y = np.dot(self.ones, self.inv_matrix) / self.denominator
+        return np.around(x, decimals=2), np.around(y, decimals=2), 1 / self.denominator
+    
+    def print_result(self):
+        if self.print:
+            print('Optimal strategy X: {},' \
+                  '\nOptimal strategy Y: {},'
+                  '\nPrice game = {}'.format(self.optimal_strategy_x,
+                                             self.optimal_strategy_y,
+                                             1 / self.denominator)
+                  )
+
+
 class SolveIteration(object):
     
     def __init__(self):
