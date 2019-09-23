@@ -328,14 +328,13 @@ def compute_analytical_solution(kernel_function: KernelFunction):
 
     x, y, H = analytical_solver.solve()
 
-    print('АНАЛИТИЧЕСКОЕ РЕШЕНИЕ')
-    print('x={:2.3f} y={:2.3f} H={:2.3f}\n\n'.format(
+    print('Analytical solution\nx={:2.3f} y={:2.3f} H={:2.3f}\n\n'.format(
         float(x), float(y), float(H))
     )
     
     
 def compute_numerical_solution(kernel_function: KernelFunction):
-    print('ЧИСЛЕННОЕ РЕШЕНИЕ')
+    print('Numerical solution')
     try:
         results = []
         steps = 1
