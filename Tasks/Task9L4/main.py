@@ -69,9 +69,9 @@ class SolutionAbstract(object):
 
 
 if __name__ == "__main__":
-    crosswayBiMatrix = np.array([[[1, 0.5], [2, 0]], [[1, 2], [0.5, 0]], ], float)
-    familyDisputeBiMatrix = np.array([[[4, 0], [0, 1]], [[1, 0], [0, 4]], ], float)
-    prisonerDilemmaBiMatrix = np.array([[[-5, 0], [-10, -1]], [[-5, -10], [0, -1]], ], float)
+    crosswayBiMatrix = np.array([[[1, 0.5], [2, 0]], [[1, 2], [0.5, 0]], ], float)  # перекрёсток со смещением
+    familyDisputeBiMatrix = np.array([[[4, 0], [0, 1]], [[1, 0], [0, 4]], ], float)  # семейный спор
+    prisonerDilemmaBiMatrix = np.array([[[-5, 0], [-10, -1]], [[-5, -10], [0, -1]], ], float)  # дилема заключенного
     MAX_VALUE = 50
     MIN_VALUE = 0
     DIM = 10
