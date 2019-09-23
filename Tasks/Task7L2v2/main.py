@@ -363,7 +363,15 @@ def compute_numerical_solution(kernel_function: KernelFunction):
         sys.exit(0)
 
 
-def main():
+def process_solutions(kernel):
+    if not kernel:
+        return
+    
+    compute_analytical_solution(kernel)
+    compute_numerical_solution(kernel)
+
+
+def main(*args):
     kernel = KernelFunction(
         a=Rational(-10),
         b=Rational(15),
@@ -371,10 +379,8 @@ def main():
         d=Rational(-12),
         e=Rational(-48)
     )
-
-    compute_analytical_solution(kernel)
-
-    compute_numerical_solution(kernel)
+    
+    process_solutions(kernel)
 
 
 if __name__ == '__main__':
