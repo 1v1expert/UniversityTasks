@@ -3,6 +3,10 @@ from numpy.linalg import inv
 from termcolor import colored
 
 
+class SolutionAbstract(object):
+    pass
+
+
 def check_nash_opt(bimatrix, i, j):
     matrix_dim, _ = bimatrix[0].shape
     best_a_strategy = False
