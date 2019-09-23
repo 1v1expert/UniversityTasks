@@ -1,25 +1,10 @@
 import sys
 from abc import ABC, abstractmethod
-from typing import Tuple
-
-# from sympy import solveset, Eq, Rational
-
-# from sympy import Rational
-from sympy import symbols, Rational, diff, Eq, solveset
-from sympy.core.add import Add
-from typing import Optional
-
-from sympy import Matrix, Rational
-
+from typing import Callable, Tuple, Any, List, Optional
 from collections import defaultdict
-from typing import Callable, Tuple, Any, List
 
-from sympy import Matrix, Rational
-
-# from kernel_function import KernelFunction
-# from analytical_solver import AnalyticalSolver
-# from base_solver import NoSolutionException
-# from numerical_solver import NumericalSolver
+from sympy import symbols, Rational, diff, Eq, solveset, Matrix
+from sympy.core.add import Add
 
 
 class KernelFunction:
