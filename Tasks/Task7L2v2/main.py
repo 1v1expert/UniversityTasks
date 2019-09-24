@@ -261,7 +261,7 @@ class NumericalSolver(BaseSolver):
             b_clear_strategy = minimax[1][1]
         
         else:
-            print('Седловой точки нет, решение методом Брауна-Робинсона:')
+            print('Седловой точки нет, решение методом Брауна-Робинсона:')
             braun_robinson_table = BraunRobinsonTable(self.grid_matrix, maximin[1][0], minimax[1][1])
             braun_robinson_table.solve(0.01)
             
@@ -343,7 +343,7 @@ def compute_numerical_solution(kernel_function: KernelFunction):
                     max(results[-1*steps_shift:]) -
                     min(results[-1*steps_shift:])
                 ) > 0.01:
-            print(f'N={steps}')
+            
             numerical_solver = NumericalSolver(kernel_function, steps)
 
             if steps <= 10:
@@ -354,7 +354,10 @@ def compute_numerical_solution(kernel_function: KernelFunction):
             print('x={:2.3f} y={:2.3f} H={:2.3f}\n\n'.format(
                 float(x), float(y), float(H))
             )
-
+            print(f'N={steps}', 'MaxH: {}, MinH: {}'.format(
+                float(max(results[-1 * steps_shift:])),
+                float(min(results[-1 * steps_shift:]))
+            ))
             steps += 1
 
     except NoSolutionException as exception:
@@ -373,10 +376,10 @@ def process_solutions(kernel):
 def main(*args):
     kernel = KernelFunction(
         a=Rational(-10),
-        b=Rational(15),
-        c=Rational(60),
-        d=Rational(-12),
-        e=Rational(-48)
+        b=Rational(15/4),
+        c=Rational(10),
+        d=Rational(-4),
+        e=Rational(-8)
     )
     
     process_solutions(kernel)
