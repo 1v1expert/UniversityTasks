@@ -177,8 +177,6 @@ class BraunRobinsGame(AnalyticalGame):
         print('Стратегия игрока 2: {}'.format(br_rob_strategy2))
     
     
-
-
 if __name__ == '__main__':
     test_matrix = [[2, 1, 3], [3, 0, 1], [1, 2, 1]]
     matrix = [[17, 4, 9], [0, 16, 9], [12, 2, 19]]
