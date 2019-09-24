@@ -105,7 +105,6 @@ class BraunRobinsGame(AnalyticalGame):
                 break
         self.pprint_payment_matrix()
 
-    
     def iteration(self, iterr):
         max_a = self.winnings_a[iterr].max()  # нахождение макисмального элемента у играка А
         pos_max_a = np.nonzero(self.winnings_a[iterr] == max_a)[0][0]  # получение позиции максимального элемента
@@ -119,6 +118,39 @@ class BraunRobinsGame(AnalyticalGame):
         # print(pos_max_a+1, new_row_winnings_b, pos_min_b+1, new_row_winnings_a)
         # print(self.winnings_b[iterr], self.winnings_a[iterr], max_a, pos_max_a, self.np_matrix[pos_max_a, :], new_row_winnings_b)
         return new_row_winnings_b, pos_max_a, new_row_winnings_a, pos_min_b
+
+    def get_price_game(self):
+        def check_point(a, b):  # проверка наличия седловой точки
+            if a == b:
+                return True
+            else:
+                return False
+    
+        self.top_game_price = self.np_matrix.max(axis=0).min()  # нахождение верхней цены игры
+        self.lower_game_price = self.np_matrix.min(axis=1).max()  # -//- нижней
+    
+        if check_point(self.top_game_price, self.lower_game_price):
+            print('Есть седловая точка, {} == {}'.format(self.top_game_price, self.lower_game_price))
+        else:
+            print('Нет седловой точки, {} <> {}'.format(self.top_game_price, self.lower_game_price))
+    
+        print('Игроки\tB1\tB2\tB3    min(Ai)')
+        for i, row in enumerate(self.np_matrix):
+            line = 'A{}\t{}\t{}'.format(i + 1, '\t'.join(['{}'.format(elem) for elem in row]),
+                                        self.np_matrix.min(axis=1)[i])
+            print(line)
+        print('max(Bi)\t{}   {}\{}'.format(
+            '\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]),
+            self.np_matrix.max(axis=0).min(),
+            self.np_matrix.min(axis=1).max())
+        )
+        print('=============================')
+    
+        posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]  # чистая стратегия игрока B на линии
+        posB = np.nonzero(self.np_matrix.min(axis=1) == self.lower_game_price)[0][
+            0]  # чистая стратегия игрока A на линии
+        # print(posA, posB)
+        return posB, posA
     
     def pprint_payment_matrix(self):
         self.winnings_ab = np.column_stack((self.winnings_b, self.winnings_a))
@@ -144,38 +176,7 @@ class BraunRobinsGame(AnalyticalGame):
         print('Стратегия игрока 1: {}'.format(br_rob_strategy1))
         print('Стратегия игрока 2: {}'.format(br_rob_strategy2))
     
-    def get_price_game(self):
-        def check_point(a, b):  # проверка наличия седловой точки
-            if a == b:
-                return True
-            else:
-                return False
-        
-        self.top_game_price = self.np_matrix.max(axis=0).min()  # нахождение верхней цены игры
-        self.lower_game_price = self.np_matrix.min(axis=1).max()  # -//- нижней
-        
-        if check_point(self.top_game_price, self.lower_game_price):
-            print('Есть седловая точка, {} == {}'.format(self.top_game_price, self.lower_game_price))
-        else:
-            print('Нет седловой точки, {} <> {}'.format(self.top_game_price, self.lower_game_price))
-        
-        print('Игроки\tB1\tB2\tB3    min(Ai)')
-        for i, row in enumerate(self.np_matrix):
-            line = 'A{}\t{}\t{}'.format(i + 1, '\t'.join(['{}'.format(elem) for elem in row]),
-                                        self.np_matrix.min(axis=1)[i])
-            print(line)
-        print('max(Bi)\t{}   {}\{}'.format(
-            '\t'.join(['{}'.format(elem) for elem in self.np_matrix.max(axis=0)]),
-            self.np_matrix.max(axis=0).min(),
-            self.np_matrix.min(axis=1).max())
-        )
-        print('=============================')
-        
-        posA = np.nonzero(self.np_matrix.max(axis=0) == self.top_game_price)[0][0]  # чистая стратегия игрока B на линии
-        posB = np.nonzero(self.np_matrix.min(axis=1) == self.lower_game_price)[0][
-            0]  # чистая стратегия игрока A на линии
-        # print(posA, posB)
-        return posB, posA
+    
 
 
 if __name__ == '__main__':
