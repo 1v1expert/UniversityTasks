@@ -17,7 +17,7 @@ def printoptions(*args, **kwargs):
 
 
 class AnalyticalGame(object):
-    ''' Аналитический(матричный) метод решения матричной игры с нулевой суммой '''
+    """Аналитический(матричный) метод решения матричной игры с нулевой суммой"""
     
     def __init__(self, **args):
         self.matrix = args.get('matrix', None)
